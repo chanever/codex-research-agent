@@ -10,6 +10,25 @@ cp config/research.env.example config/research.env
 
 Edit `config/research.env` to set your research domain, focus, keywords, output language, and Codex CLI options.
 
+## Change Research Topic
+
+Most topic changes only require editing `config/research.env`; you usually do not need to edit `prompts/make_research_brief.md`.
+
+Example for a different research field:
+
+```env
+RESEARCH_DOMAIN="Robotics Foundation Models"
+RESEARCH_FOCUS="vision-language-action models for household manipulation"
+RESEARCH_KEYWORDS="VLA model,robot foundation model,RT-2,OpenVLA,manipulation benchmark,embodied AI"
+RESEARCH_QUESTIONS="Which recent VLA models are reproducible, and what benchmarks should I compare first?"
+RESEARCH_SOURCE_TYPES="recent papers,arXiv papers,GitHub repositories,benchmarks,datasets,technical blogs"
+RESEARCH_METHOD_HINTS="Prioritize open-source models, available datasets, benchmark protocols, and low-cost reproduction paths."
+OUTPUT_LANGUAGE=ko
+TOP_K=5
+```
+
+`scripts/run_once.sh` injects these values into the prompt at runtime, and `prompts/make_research_brief.md` uses them as the source of truth for the research topic.
+
 ## Run Once
 
 ```bash

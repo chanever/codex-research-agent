@@ -41,10 +41,14 @@ The wrapper script may prepend runtime configuration before this prompt. If prov
 - `OUTPUT_PAPERS_TO_READ`
 - `OUTPUT_RESEARCH_IDEAS`
 
-If runtime values are missing, use these defaults:
+If runtime values are missing, use these generic defaults:
 
-- Research domain: LLM Agent Security
-- Research focus: execution graph based detection for malicious tool-use agents
+- Research domain: AI Research
+- Research focus: recent important papers, repositories, benchmarks, datasets, and research ideas
+- Research keywords: recent papers, arXiv, benchmark, dataset, framework, open source
+- Research questions: What should I read next, and what experiments or project ideas are worth trying?
+- Preferred source types: recent papers, arXiv papers, GitHub repositories, technical blogs, benchmarks, datasets, frameworks
+- Method or evaluation hints: Prioritize sources that can inform concrete experiments, implementation plans, or future research questions.
 - Output language: Korean
 - Top recommended items: 5
 - Minimum relevance score: 7.0
