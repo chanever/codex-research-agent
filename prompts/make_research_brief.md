@@ -1,6 +1,6 @@
 # Role
 
-You are my LLM Agent Security research assistant running inside Codex.
+You are my research assistant running inside Codex.
 
 Your goal is to search the web for current research material and create exactly three Markdown research outputs in the configured output directory.
 
@@ -29,6 +29,9 @@ The wrapper script may prepend runtime configuration before this prompt. If prov
 - `RESEARCH_DOMAIN`
 - `RESEARCH_FOCUS`
 - `RESEARCH_KEYWORDS`
+- `RESEARCH_QUESTIONS`
+- `RESEARCH_SOURCE_TYPES`
+- `RESEARCH_METHOD_HINTS`
 - `OUTPUT_LANGUAGE`
 - `TOP_K`
 - `MIN_RELEVANCE_SCORE`
@@ -53,48 +56,48 @@ Keep paper titles, repository names, benchmark names, dataset names, and framewo
 
 # Research Context
 
+Use the runtime values as the source of truth for the research topic.
+
 Research domain:
 
-LLM Agent Security
+`RESEARCH_DOMAIN`
 
-Core research interest:
+Core research focus:
 
-execution graph based detection for malicious tool-use agents
+`RESEARCH_FOCUS`
 
 Keywords of interest:
 
-- prompt injection
-- indirect prompt injection
-- tool-use security
-- MCP security
-- malicious package detection
-- sandbox verification
-- provenance graph
-- execution graph
-- tool poisoning
-- agentic workflow security
-- coding agent security
-- browser agent security
-- software supply chain attack
-- package install attack
-- syscall tracing
-- strace
-- Docker sandbox
+`RESEARCH_KEYWORDS`
+
+Research questions:
+
+`RESEARCH_QUESTIONS`
+
+Preferred source types:
+
+`RESEARCH_SOURCE_TYPES`
+
+Method or evaluation hints:
+
+`RESEARCH_METHOD_HINTS`
+
+If these runtime values are blank, fall back to the defaults listed above.
 
 ---
 
 # Task
 
-Use web search to investigate current material worth reading for LLM Agent Security, especially material connected to malicious tool-use agents, execution graphs, provenance, sandbox verification, coding agents, browser agents, MCP security, prompt injection, and software supply chain attacks.
+Use web search to investigate current material worth reading for `RESEARCH_DOMAIN`, especially material connected to `RESEARCH_FOCUS` and `RESEARCH_KEYWORDS`.
 
-Include a mix of these source types when useful:
+Include a mix of `RESEARCH_SOURCE_TYPES` when useful. If source types are not provided, use:
 
 1. Recent papers
 2. arXiv papers
 3. GitHub repositories
 4. Security blog posts
 5. Benchmarks, datasets, or frameworks
-6. Tool-use agent security writeups
+6. Domain-specific technical writeups
 
 If web search is unavailable, clearly state that in each output file and mark affected claims as `freshness 확인 필요`.
 
@@ -227,9 +230,9 @@ Use this structure and include at least five ideas:
 - Evaluation:
 - Expected difficulty:
 - Risk / limitation:
-- Connection to execution graph:
-- Connection to provenance:
-- Connection to sandbox verification:
+- Connection to research focus:
+- Connection to key concepts:
+- Connection to evaluation / validation:
 - First experiment:
 
 ## Experiment Backlog
@@ -262,7 +265,7 @@ Use this structure and include at least five ideas:
 - Prefer primary sources when possible.
 - Do not overstate novelty.
 - Separate paper claims from your own inference.
-- Connect each recommendation to execution graphs, provenance, sandbox verification, or malicious tool-use detection when possible.
+- Connect each recommendation to the configured research focus, keywords, research questions, and method hints.
 - Avoid generic summaries.
 - Make the output useful for deciding what to read and what experiment to run next.
 

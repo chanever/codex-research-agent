@@ -68,6 +68,9 @@ nano config/research.env
 RESEARCH_DOMAIN="LLM Agent Security"
 RESEARCH_FOCUS="execution graph based detection for malicious tool-use agents"
 RESEARCH_KEYWORDS="prompt injection,indirect prompt injection,tool-use security,MCP security"
+RESEARCH_QUESTIONS="How can execution/provenance graphs reveal malicious or risky tool-use behavior in agents?"
+RESEARCH_SOURCE_TYPES="recent papers,arXiv papers,GitHub repositories,technical blogs,benchmarks,datasets,frameworks"
+RESEARCH_METHOD_HINTS="Prioritize items that can become experiments, benchmarks, datasets, or implementation ideas."
 OUTPUT_LANGUAGE=ko
 TOP_K=5
 MIN_RELEVANCE_SCORE=7.0
@@ -81,6 +84,24 @@ MIN_RELEVANCE_SCORE=7.0
 RESEARCH_DOMAIN="AI Agent Security"
 RESEARCH_FOCUS="detecting malicious tool-use agents with provenance graphs"
 RESEARCH_KEYWORDS="prompt injection,tool poisoning,MCP security,agent benchmark,provenance graph"
+RESEARCH_QUESTIONS="How can provenance graphs identify malicious or risky tool-use behavior?"
+RESEARCH_SOURCE_TYPES="recent papers,arXiv papers,GitHub repositories,technical blogs,benchmarks"
+RESEARCH_METHOD_HINTS="Prefer items with reproducible experiments, datasets, instrumentation ideas, or benchmark code."
+OUTPUT_LANGUAGE=ko
+TOP_K=5
+```
+
+다른 분야로 바꿀 때는 보통 `prompts/make_research_brief.md`를 수정하지 않아도 된다. `run_once.sh`가 위 env 값을 프롬프트 앞에 주입하고, 프롬프트는 그 값을 연구 주제의 기준으로 사용한다.
+
+예를 들어 robotics 분야로 바꾸려면:
+
+```env
+RESEARCH_DOMAIN="Robotics Foundation Models"
+RESEARCH_FOCUS="vision-language-action models for household manipulation"
+RESEARCH_KEYWORDS="VLA model,robot foundation model,RT-2,OpenVLA,manipulation benchmark,embodied AI"
+RESEARCH_QUESTIONS="Which recent VLA models are reproducible, and what benchmarks should I compare first?"
+RESEARCH_SOURCE_TYPES="recent papers,arXiv papers,GitHub repositories,benchmarks,datasets,technical blogs"
+RESEARCH_METHOD_HINTS="Prioritize open-source models, available datasets, benchmark protocols, and low-cost reproduction paths."
 OUTPUT_LANGUAGE=ko
 TOP_K=5
 ```
@@ -330,6 +351,8 @@ crontab -e
 CODEX_BIN=/usr/local/bin/codex
 ```
 
+서버에 배포해서 cron과 GitHub push까지 운영하려면 [server_deployment.md](server_deployment.md)를 먼저 따른다.
+
 ---
 
 ## 12. GitHub Repository Connection
@@ -382,23 +405,13 @@ GIT_OUTPUT_PATHS="outputs/latest outputs/runs outputs/archive"
 bash scripts/push_outputs.sh
 ```
 
-하지만 주의할 점이 있다.
-
-기본 `.gitignore`는 생성된 연구 결과를 무시한다.
-
-```gitignore
-outputs/latest/*.md
-outputs/runs/*
-outputs/archive/*
-```
-
-그래서 outputs를 GitHub에 올리고 싶다면 `.gitignore`를 의도적으로 수정해야 한다.
+현재 설정에서는 generated outputs가 Git에 올라갈 수 있다. GitHub 앱에서 바로 보기 위한 운영 방식이다.
 
 추천:
 
-- 템플릿 repo는 public으로 유지
-- 개인 연구 결과 outputs는 private repo에 저장
+- 개인 연구 결과가 들어가면 repo를 private으로 유지
 - public repo에 outputs를 올리기 전에는 민감한 내용이 없는지 검토
+- 가능하면 템플릿 public repo와 outputs private repo를 분리
 
 ---
 
@@ -412,17 +425,14 @@ config/research.env
 .env.*
 logs/*.log
 logs/*.jsonl
-outputs/latest/*.md
-outputs/runs/*
-outputs/archive/*
 ```
 
-GitHub에 올라가는 placeholder:
+GitHub에 올라갈 수 있는 outputs:
 
 ```txt
-outputs/latest/.gitkeep
-outputs/runs/.gitkeep
-outputs/archive/.gitkeep
+outputs/latest/*.md
+outputs/runs/**/*
+outputs/archive/**/*
 logs/.gitkeep
 ```
 
@@ -430,9 +440,14 @@ logs/.gitkeep
 
 ```bash
 git check-ignore -v config/research.env
-git check-ignore -v outputs/latest/final_response.md
-git check-ignore -v outputs/runs/smoke_test/final_response.md
 git check-ignore -v logs/codex_stderr.log
+```
+
+outputs가 ignore되지 않는지 확인:
+
+```bash
+git check-ignore outputs/latest/final_response.md || echo "outputs/latest is trackable"
+git check-ignore outputs/runs/smoke_test/final_response.md || echo "outputs/runs is trackable"
 ```
 
 ---
@@ -540,4 +555,4 @@ cat outputs/latest/final_response.md
 - 생성된 private outputs를 무심코 public repo에 push
 - force push
 
-이 프로젝트의 기본값은 안전하게 보수적으로 잡혀 있다. outputs를 공개하려면 `.gitignore`를 직접 수정하고 내용을 검토한 뒤 진행한다.
+GitHub 앱에서 보기 위해 outputs는 추적 가능하게 바뀌었다. 개인 연구 노트가 들어간다면 repo를 private으로 유지한다.

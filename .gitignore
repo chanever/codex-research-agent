@@ -7,15 +7,7 @@ config/research.env
 logs/*.log
 logs/*.jsonl
 
-# generated private outputs
-outputs/latest/*.md
-outputs/runs/*
-outputs/archive/*
-
 # keep directory placeholders
-!outputs/latest/.gitkeep
-!outputs/runs/.gitkeep
-!outputs/archive/.gitkeep
 !logs/.gitkeep
 
 # OS/editor

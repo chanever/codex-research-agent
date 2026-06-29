@@ -78,14 +78,13 @@ config/research.env
 .env.*
 logs/*.log
 logs/*.jsonl
-outputs/latest/*.md
-outputs/runs/*
-outputs/archive/*
 credential
 token
 Codex login 정보
 GitHub token
 ```
+
+생성된 outputs는 GitHub 모바일 앱에서 보기 위해 push할 수 있다. 단, 개인 연구 내용이 포함될 수 있으므로 repo를 private으로 운영하는 것을 권장한다.
 
 ---
 
@@ -297,6 +296,9 @@ TZ=Asia/Seoul
 RESEARCH_DOMAIN="LLM Agent Security"
 RESEARCH_FOCUS="execution graph based detection for malicious tool-use agents"
 RESEARCH_KEYWORDS="prompt injection,indirect prompt injection,tool-use security,MCP security,malicious package detection,sandbox verification,provenance graph,execution graph,tool poisoning,agentic workflow security,coding agent security,browser agent security,software supply chain attack,package install attack,syscall tracing,strace,Docker sandbox"
+RESEARCH_QUESTIONS="How can execution/provenance graphs reveal malicious or risky tool-use behavior in agents?"
+RESEARCH_SOURCE_TYPES="recent papers,arXiv papers,GitHub repositories,technical blogs,benchmarks,datasets,frameworks"
+RESEARCH_METHOD_HINTS="Prioritize items that can become experiments, benchmarks, datasets, or implementation ideas."
 OUTPUT_LANGUAGE=ko
 TOP_K=5
 MIN_RELEVANCE_SCORE=7.0
@@ -455,9 +457,9 @@ outputs/latest/research_ideas.md
 - Evaluation:
 - Expected difficulty:
 - Risk / limitation:
-- Connection to execution graph:
-- Connection to provenance:
-- Connection to sandbox verification:
+- Connection to research focus:
+- Connection to key concepts:
+- Connection to evaluation / validation:
 - First experiment:
 
 최소 5개 아이디어를 작성하라.
@@ -521,15 +523,7 @@ config/research.env
 logs/*.log
 logs/*.jsonl
 
-# generated private outputs
-outputs/latest/*.md
-outputs/runs/*
-outputs/archive/*
-
 # keep directory placeholders
-!outputs/latest/.gitkeep
-!outputs/runs/.gitkeep
-!outputs/archive/.gitkeep
 !logs/.gitkeep
 
 # OS/editor
@@ -545,7 +539,7 @@ tmp/
 README에는 다음을 명확히 써라.
 
 ```txt
-By default, generated outputs are ignored by Git to prevent accidentally publishing private research notes.
+Generated outputs are intended to be pushed to your configured GitHub repository so they can be read from the GitHub mobile app. Keep the repository private if the notes contain personal research context.
 ```
 
 ---
@@ -582,8 +576,9 @@ MIT License를 생성하라.
 4. force push하지 마라.
 5. 기존 파일을 삭제하지 마라.
 6. UI, Notion, DB, API 서버를 만들지 마라.
-7. logs와 private outputs가 기본적으로 Git에 올라가지 않게 하라.
-8. 스크립트에서 token 값을 echo하지 마라.
+7. logs와 credentials는 기본적으로 Git에 올라가지 않게 하라.
+8. generated outputs는 GitHub 앱에서 보기 위해 추적 가능하게 하되, private repo 사용을 권장하라.
+9. 스크립트에서 token 값을 echo하지 마라.
 
 ---
 

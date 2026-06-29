@@ -175,7 +175,7 @@ final_response.md
 
 - `outputs/runs/...`는 실행별 기록이다.
 - `outputs/latest/`는 최신 결과만 보는 편의 경로다.
-- 둘 다 기본적으로 Git ignore된다.
+- GitHub 앱에서 보기로 한 현재 운영 방식에서는 둘 다 Git에 올라갈 수 있다. 개인 내용이 포함되면 repo를 private으로 유지한다.
 
 ---
 
@@ -284,11 +284,11 @@ GIT_OUTPUT_PATHS="outputs/latest outputs/archive"
 
 ---
 
-## 10. Private Output Safety
+## 10. Output Push Policy Changed
 
-출력 디렉터리를 `outputs/runs`로 추가하면서, `.gitignore`도 함께 보완해야 했다.
+초기에는 출력 디렉터리를 `outputs/runs`로 추가하면서 generated outputs를 `.gitignore`로 막았다.
 
-필요한 ignore 규칙:
+초기 ignore 규칙:
 
 ```gitignore
 outputs/latest/*.md
@@ -299,22 +299,37 @@ outputs/archive/*
 !outputs/archive/.gitkeep
 ```
 
+이후 사용자가 GitHub 앱에서 결과 Markdown을 바로 보기로 하면서 outputs ignore 규칙을 제거했다.
+
+현재 정책:
+
+```txt
+outputs/latest/*.md      trackable
+outputs/runs/**/*        trackable
+outputs/archive/**/*     trackable
+config/research.env      ignored
+logs/*.log               ignored
+```
+
 검증:
 
 ```bash
-git check-ignore -v outputs/runs/2026_06_29_12_40_smoke/final_response.md
-git check-ignore -v outputs/latest/final_response.md
 git check-ignore -v config/research.env
 git check-ignore -v logs/codex_stderr.log
+git check-ignore outputs/latest/final_response.md || echo "outputs/latest is trackable"
+git check-ignore outputs/runs/2026_06_29_12_40_smoke/final_response.md || echo "outputs/runs is trackable"
 ```
 
 결과:
 
-- generated run outputs ignored
-- latest outputs ignored
+- generated run outputs trackable
+- latest outputs trackable
 - private config ignored
 - logs ignored
-- `.gitkeep`만 추적 가능
+
+주의:
+
+- outputs가 GitHub에 올라가므로 repo를 private으로 유지하는 것을 권장한다.
 
 ---
 

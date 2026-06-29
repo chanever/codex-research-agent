@@ -17,8 +17,11 @@ else
 fi
 
 ENABLE_GITHUB_PUSH="${ENABLE_GITHUB_PUSH:-false}"
-GIT_BRANCH="${GIT_BRANCH:-main}"
-GIT_OUTPUT_PATHS="${GIT_OUTPUT_PATHS:-outputs/latest outputs/archive}"
+GIT_BRANCH="${GIT_BRANCH:-master}"
+GIT_OUTPUT_PATHS="${GIT_OUTPUT_PATHS:-outputs/latest outputs/runs outputs/archive}"
+GIT_PULL_BEFORE_PUSH="${GIT_PULL_BEFORE_PUSH:-true}"
+GIT_COMMIT_USER_NAME="${GIT_COMMIT_USER_NAME:-codex-research-agent}"
+GIT_COMMIT_USER_EMAIL="${GIT_COMMIT_USER_EMAIL:-codex-research-agent@users.noreply.github.com}"
 TIMEZONE="${TIMEZONE:-Asia/Seoul}"
 
 if [[ "$ENABLE_GITHUB_PUSH" != "true" ]]; then
@@ -31,11 +34,28 @@ if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   exit 1
 fi
 
+if ! git remote get-url origin >/dev/null 2>&1; then
+  echo "Error: Git remote 'origin' is not configured." >&2
+  exit 1
+fi
+
+if [[ "$GIT_PULL_BEFORE_PUSH" == "true" ]]; then
+  git pull --ff-only origin "$GIT_BRANCH"
+fi
+
+if ! git config user.name >/dev/null; then
+  git config user.name "$GIT_COMMIT_USER_NAME"
+fi
+
+if ! git config user.email >/dev/null; then
+  git config user.email "$GIT_COMMIT_USER_EMAIL"
+fi
+
 read -r -a output_paths <<< "$GIT_OUTPUT_PATHS"
 
 if ! git add -- "${output_paths[@]}"; then
   echo "Warning: Git could not add the configured output paths." >&2
-  echo "Generated Markdown outputs are ignored by default. Adjust .gitignore before enabling public output pushes." >&2
+  echo "Check GIT_OUTPUT_PATHS and .gitignore before enabling output pushes." >&2
   exit 0
 fi
 

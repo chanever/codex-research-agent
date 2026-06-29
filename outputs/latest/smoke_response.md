@@ -1,0 +1,1 @@
+Created `outputs/latest/smoke_test.md` with the requested text.

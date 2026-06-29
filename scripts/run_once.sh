@@ -20,6 +20,9 @@ fi
 RESEARCH_DOMAIN="${RESEARCH_DOMAIN:-LLM Agent Security}"
 RESEARCH_FOCUS="${RESEARCH_FOCUS:-execution graph based detection for malicious tool-use agents}"
 RESEARCH_KEYWORDS="${RESEARCH_KEYWORDS:-prompt injection,indirect prompt injection,tool-use security,MCP security,malicious package detection,sandbox verification,provenance graph,execution graph,tool poisoning,agentic workflow security,coding agent security,browser agent security,software supply chain attack,package install attack,syscall tracing,strace,Docker sandbox}"
+RESEARCH_QUESTIONS="${RESEARCH_QUESTIONS:-}"
+RESEARCH_SOURCE_TYPES="${RESEARCH_SOURCE_TYPES:-recent papers,arXiv papers,GitHub repositories,technical blogs,benchmarks,datasets,frameworks}"
+RESEARCH_METHOD_HINTS="${RESEARCH_METHOD_HINTS:-}"
 OUTPUT_LANGUAGE="${OUTPUT_LANGUAGE:-ko}"
 TOP_K="${TOP_K:-5}"
 MIN_RELEVANCE_SCORE="${MIN_RELEVANCE_SCORE:-7.0}"
@@ -140,6 +143,9 @@ fi
 - RESEARCH_DOMAIN: $RESEARCH_DOMAIN
 - RESEARCH_FOCUS: $RESEARCH_FOCUS
 - RESEARCH_KEYWORDS: $RESEARCH_KEYWORDS
+- RESEARCH_QUESTIONS: $RESEARCH_QUESTIONS
+- RESEARCH_SOURCE_TYPES: $RESEARCH_SOURCE_TYPES
+- RESEARCH_METHOD_HINTS: $RESEARCH_METHOD_HINTS
 - OUTPUT_LANGUAGE: $OUTPUT_LANGUAGE
 - TOP_K: $TOP_K
 - MIN_RELEVANCE_SCORE: $MIN_RELEVANCE_SCORE

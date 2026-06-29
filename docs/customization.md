@@ -16,6 +16,9 @@ Then edit:
 RESEARCH_DOMAIN="LLM Agent Security"
 RESEARCH_FOCUS="execution graph based detection for malicious tool-use agents"
 RESEARCH_KEYWORDS="prompt injection,tool-use security,MCP security"
+RESEARCH_QUESTIONS="How can execution/provenance graphs reveal malicious or risky tool-use behavior in agents?"
+RESEARCH_SOURCE_TYPES="recent papers,arXiv papers,GitHub repositories,technical blogs,benchmarks,datasets,frameworks"
+RESEARCH_METHOD_HINTS="Prioritize items that can become experiments, benchmarks, datasets, or implementation ideas."
 OUTPUT_LANGUAGE=ko
 TOP_K=5
 MIN_RELEVANCE_SCORE=7.0
@@ -24,7 +27,29 @@ CODEX_WEB_SEARCH_MODE=live
 
 ## Change Research Domain
 
-Set `RESEARCH_DOMAIN`, `RESEARCH_FOCUS`, and `RESEARCH_KEYWORDS` to your topic. Keep values with spaces inside quotes because the file is sourced by Bash.
+Set these values to your topic:
+
+- `RESEARCH_DOMAIN`: broad field, such as `Robotics Foundation Models`
+- `RESEARCH_FOCUS`: the specific direction you care about
+- `RESEARCH_KEYWORDS`: comma-separated search terms
+- `RESEARCH_QUESTIONS`: the questions the brief should answer
+- `RESEARCH_SOURCE_TYPES`: source types to prioritize
+- `RESEARCH_METHOD_HINTS`: experiment, evaluation, dataset, or implementation preferences
+
+Keep values with spaces inside quotes because the file is sourced by Bash.
+
+Example:
+
+```env
+RESEARCH_DOMAIN="Robotics Foundation Models"
+RESEARCH_FOCUS="vision-language-action models for household manipulation"
+RESEARCH_KEYWORDS="VLA model,robot foundation model,RT-2,OpenVLA,manipulation benchmark,embodied AI"
+RESEARCH_QUESTIONS="Which recent VLA models are reproducible, and what benchmarks should I compare first?"
+RESEARCH_SOURCE_TYPES="recent papers,arXiv papers,GitHub repositories,benchmarks,datasets,technical blogs"
+RESEARCH_METHOD_HINTS="Prioritize open-source models, available datasets, benchmark protocols, and low-cost reproduction paths."
+```
+
+`prompts/make_research_brief.md` reads these runtime values, so most topic changes should only require editing `config/research.env`.
 
 ## Change TOP_K
 
@@ -63,7 +88,7 @@ Available values:
 
 ## Customize the Prompt
 
-Edit `prompts/make_research_brief.md` to change:
+Edit `prompts/make_research_brief.md` only when you want to change the stable output format or research workflow itself, such as:
 
 - Source types
 - Output file sections

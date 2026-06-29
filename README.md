@@ -13,7 +13,7 @@ It does not include a web UI, Notion integration, database, API server, or Pytho
 - `outputs/runs/YYYY_MM_DD_HH_MM/research_ideas.md`: at least five research ideas and an experiment backlog.
 - `outputs/latest/`: a copy of the newest completed run.
 
-By default, generated outputs are ignored by Git to prevent accidentally publishing private research notes.
+Generated outputs are intended to be pushed to your configured GitHub repository so they can be read from the GitHub mobile app. Keep the repository private if the notes contain personal research context.
 
 ## Prerequisites
 
@@ -38,12 +38,17 @@ Edit `config/research.env`:
 RESEARCH_DOMAIN="LLM Agent Security"
 RESEARCH_FOCUS="execution graph based detection for malicious tool-use agents"
 RESEARCH_KEYWORDS="prompt injection,indirect prompt injection,tool-use security,MCP security"
+RESEARCH_QUESTIONS="How can execution/provenance graphs reveal malicious or risky tool-use behavior in agents?"
+RESEARCH_SOURCE_TYPES="recent papers,arXiv papers,GitHub repositories,technical blogs,benchmarks,datasets,frameworks"
+RESEARCH_METHOD_HINTS="Prioritize items that can become experiments, benchmarks, datasets, or implementation ideas."
 OUTPUT_LANGUAGE=ko
 TOP_K=5
 CODEX_WEB_SEARCH_MODE=live
 ```
 
 Values with spaces should stay inside quotes because this file is sourced by Bash.
+
+The prompt reads these values at runtime. To switch research areas, update `RESEARCH_DOMAIN`, `RESEARCH_FOCUS`, `RESEARCH_KEYWORDS`, and optionally `RESEARCH_QUESTIONS`, `RESEARCH_SOURCE_TYPES`, and `RESEARCH_METHOD_HINTS`; you usually do not need to edit `prompts/make_research_brief.md`.
 
 `CODEX_WEB_SEARCH_MODE` supports:
 
@@ -107,7 +112,7 @@ Then run:
 bash scripts/push_outputs.sh
 ```
 
-Important: generated Markdown outputs are ignored by `.gitignore` by default. If you want to publish outputs, intentionally edit `.gitignore` first and review the generated files before pushing. For personal research notes, a private output repository is recommended.
+Important: generated Markdown outputs are no longer ignored by `.gitignore`, so GitHub push can publish them. Use a private repository if the outputs contain personal research notes.
 
 ## Public Template vs Private Outputs
 
@@ -130,7 +135,8 @@ The public repository should not contain:
 - credentials or tokens
 - Codex login information
 - logs
-- personal generated research outputs
+
+Generated research outputs may be committed when `ENABLE_GITHUB_PUSH=true`. Use a private repository for personal notes.
 
 ## Logs
 
@@ -154,11 +160,13 @@ This template intentionally has no UI. Later, you can add a Next.js or Vercel ap
 
 See `docs/ui-extension.md`.
 
+For VPS/server cron deployment, see `md/server_deployment.md`.
+
 ## Safety Principles
 
 - Do not store credentials in this repo.
 - Do not commit `config/research.env`.
-- Do not publish private research outputs by accident.
+- Keep the repository private if generated research outputs contain personal notes.
 - Do not use `danger-full-access` or `--yolo` for this workflow.
 - Do not force push from automation.
 - Review generated research notes before making them public.

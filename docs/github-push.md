@@ -18,21 +18,17 @@ Then run:
 bash scripts/push_outputs.sh
 ```
 
-## Important Privacy Default
+## Output Tracking
 
-Generated Markdown outputs are ignored by Git by default:
+Generated Markdown outputs are tracked by Git so they can be pushed and viewed from GitHub:
 
-```gitignore
-outputs/latest/*.md
-outputs/runs/*
-outputs/archive/*
+```txt
+outputs/latest
+outputs/runs
+outputs/archive
 ```
 
-This prevents accidentally publishing private research notes.
-
-If you want to publish outputs to a public repository, edit `.gitignore` intentionally. For example, remove or narrow the generated output ignore rules. Then review the generated files before committing.
-
-For ongoing automation, a private output repository is recommended. Keep the reusable template public and push personal research outputs only to a private repo.
+Use a private repository when outputs contain personal research notes. If you keep the template public, consider using a separate private output repository.
 
 ## Commit Behavior
 
