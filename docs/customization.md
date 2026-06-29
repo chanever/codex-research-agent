@@ -19,6 +19,7 @@ RESEARCH_KEYWORDS="prompt injection,tool-use security,MCP security"
 OUTPUT_LANGUAGE=ko
 TOP_K=5
 MIN_RELEVANCE_SCORE=7.0
+CODEX_WEB_SEARCH_MODE=live
 ```
 
 ## Change Research Domain
@@ -44,6 +45,21 @@ OUTPUT_LANGUAGE=en
 ```
 
 The prompt still asks Codex to preserve paper titles, repository names, benchmark names, dataset names, and framework names in their original English.
+
+## Change Web Search Mode
+
+Set:
+
+```env
+CODEX_WEB_SEARCH_MODE=live
+```
+
+Available values:
+
+- `live`: fetch the most recent web results.
+- `cached`: use Codex's cached web search.
+- `disabled`: turn off web search.
+- `config`: use your Codex config without passing a search override.
 
 ## Customize the Prompt
 

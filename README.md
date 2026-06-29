@@ -1,16 +1,17 @@
 # codex-research-agent
 
-A public-ready template for running a terminal-based Codex research agent with `codex exec --search`.
+A public-ready template for running a terminal-based Codex research agent with `codex --search ... exec`.
 
-The project helps you research a topic, collect fresh sources, and generate three Markdown files under `outputs/latest`.
+The project helps you research a topic, collect fresh sources, and generate three Markdown files for each run under `outputs/runs/YYYY_MM_DD_HH_MM/`. It also copies the newest completed run into `outputs/latest`.
 
 It does not include a web UI, Notion integration, database, API server, or Python app.
 
 ## What It Creates
 
-- `outputs/latest/daily_research_brief.md`: a daily summary with recommended items, source URLs, relevance scores, and top actions.
-- `outputs/latest/papers_to_read.md`: a prioritized reading list with a short reading plan.
-- `outputs/latest/research_ideas.md`: at least five research ideas and an experiment backlog.
+- `outputs/runs/YYYY_MM_DD_HH_MM/daily_research_brief.md`: a daily summary with recommended items, source URLs, relevance scores, and top actions.
+- `outputs/runs/YYYY_MM_DD_HH_MM/papers_to_read.md`: a prioritized reading list with a short reading plan.
+- `outputs/runs/YYYY_MM_DD_HH_MM/research_ideas.md`: at least five research ideas and an experiment backlog.
+- `outputs/latest/`: a copy of the newest completed run.
 
 By default, generated outputs are ignored by Git to prevent accidentally publishing private research notes.
 
@@ -39,9 +40,17 @@ RESEARCH_FOCUS="execution graph based detection for malicious tool-use agents"
 RESEARCH_KEYWORDS="prompt injection,indirect prompt injection,tool-use security,MCP security"
 OUTPUT_LANGUAGE=ko
 TOP_K=5
+CODEX_WEB_SEARCH_MODE=live
 ```
 
 Values with spaces should stay inside quotes because this file is sourced by Bash.
+
+`CODEX_WEB_SEARCH_MODE` supports:
+
+- `live`: fetch the most recent web results, equivalent to `--search`.
+- `cached`: use Codex's default cached web search.
+- `disabled`: turn off web search.
+- `config`: do not pass a web search override; use your Codex config.
 
 ## Manual Run
 
@@ -52,10 +61,12 @@ bash scripts/run_once.sh
 The script runs:
 
 ```bash
-codex exec --cd "$PROJECT_ROOT" --sandbox workspace-write --ask-for-approval never --search --output-last-message outputs/latest/final_response.md -
+codex --search --ask-for-approval never exec --cd "$PROJECT_ROOT" --sandbox workspace-write --output-last-message outputs/runs/YYYY_MM_DD_HH_MM/final_response.md -
 ```
 
 The prompt is passed through stdin. Standard output goes to `logs/codex_stdout.log`, and standard error goes to `logs/codex_stderr.log`.
+
+Each run writes to `outputs/runs/YYYY_MM_DD_HH_MM/` and then copies the completed files into `outputs/latest/`.
 
 ## Nightly Cron
 
@@ -86,8 +97,8 @@ To enable:
 
 ```env
 ENABLE_GITHUB_PUSH=true
-GIT_BRANCH=main
-GIT_OUTPUT_PATHS="outputs/latest outputs/archive"
+GIT_BRANCH=master
+GIT_OUTPUT_PATHS="outputs/latest outputs/runs outputs/archive"
 ```
 
 Then run:

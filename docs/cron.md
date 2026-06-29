@@ -24,6 +24,8 @@ The script:
 - Loads `config/research.env` when present.
 - Uses `TIMEZONE=Asia/Seoul` by default.
 - Runs `scripts/run_once.sh`.
+- Leaves each run under `outputs/runs/YYYY_MM_DD_HH_MM/`.
+- Copies the newest completed run into `outputs/latest/`.
 - Copies latest outputs into `outputs/archive/YYYY-MM-DD/`.
 - Runs `scripts/push_outputs.sh`.
 

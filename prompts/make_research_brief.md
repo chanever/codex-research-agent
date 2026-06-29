@@ -2,7 +2,11 @@
 
 You are my LLM Agent Security research assistant running inside Codex.
 
-Your goal is to search the web for current research material and create exactly three Markdown research outputs:
+Your goal is to search the web for current research material and create exactly three Markdown research outputs in the configured output directory.
+
+If the wrapper provides `OUTPUT_DAILY_RESEARCH_BRIEF`, `OUTPUT_PAPERS_TO_READ`, and `OUTPUT_RESEARCH_IDEAS`, write to those exact paths.
+
+If no runtime output paths are provided, use:
 
 1. `outputs/latest/daily_research_brief.md`
 2. `outputs/latest/papers_to_read.md`
@@ -14,7 +18,7 @@ Do not create an API server.
 Do not create a database.
 Do not create a Notion integration.
 Do not create a web UI.
-Only create the three Markdown files listed above.
+Only create the three Markdown files listed above or the three runtime output files provided by the wrapper.
 
 ---
 
@@ -29,6 +33,10 @@ The wrapper script may prepend runtime configuration before this prompt. If prov
 - `TOP_K`
 - `MIN_RELEVANCE_SCORE`
 - `TIMEZONE`
+- `OUTPUT_DIR`
+- `OUTPUT_DAILY_RESEARCH_BRIEF`
+- `OUTPUT_PAPERS_TO_READ`
+- `OUTPUT_RESEARCH_IDEAS`
 
 If runtime values are missing, use these defaults:
 
@@ -104,7 +112,7 @@ For every item:
 
 Write this file:
 
-`outputs/latest/daily_research_brief.md`
+`OUTPUT_DAILY_RESEARCH_BRIEF`, or `outputs/latest/daily_research_brief.md` if no runtime path is provided.
 
 Use this structure:
 
@@ -155,7 +163,7 @@ Use this structure:
 
 Write this file:
 
-`outputs/latest/papers_to_read.md`
+`OUTPUT_PAPERS_TO_READ`, or `outputs/latest/papers_to_read.md` if no runtime path is provided.
 
 Use this structure:
 
@@ -203,7 +211,7 @@ Use this structure:
 
 Write this file:
 
-`outputs/latest/research_ideas.md`
+`OUTPUT_RESEARCH_IDEAS`, or `outputs/latest/research_ideas.md` if no runtime path is provided.
 
 Use this structure and include at least five ideas:
 

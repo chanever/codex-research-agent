@@ -8,8 +8,8 @@ In `config/research.env`:
 
 ```env
 ENABLE_GITHUB_PUSH=true
-GIT_BRANCH=main
-GIT_OUTPUT_PATHS="outputs/latest outputs/archive"
+GIT_BRANCH=master
+GIT_OUTPUT_PATHS="outputs/latest outputs/runs outputs/archive"
 ```
 
 Then run:
@@ -24,6 +24,7 @@ Generated Markdown outputs are ignored by Git by default:
 
 ```gitignore
 outputs/latest/*.md
+outputs/runs/*
 outputs/archive/*
 ```
 

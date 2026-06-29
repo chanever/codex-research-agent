@@ -9,6 +9,7 @@ A later UI could read:
 - `outputs/latest/daily_research_brief.md`
 - `outputs/latest/papers_to_read.md`
 - `outputs/latest/research_ideas.md`
+- `outputs/runs/YYYY_MM_DD_HH_MM/`
 - `outputs/archive/YYYY-MM-DD/`
 
 ## Vercel / Next.js
