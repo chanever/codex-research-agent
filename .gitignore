@@ -1,0 +1,26 @@
+# secrets
+.env
+.env.*
+config/research.env
+
+# logs
+logs/*.log
+logs/*.jsonl
+
+# generated private outputs
+outputs/latest/*.md
+outputs/archive/*
+
+# keep directory placeholders
+!outputs/latest/.gitkeep
+!outputs/archive/.gitkeep
+!logs/.gitkeep
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# temp
+tmp/
+.cache/
