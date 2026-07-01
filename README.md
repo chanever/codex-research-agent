@@ -432,7 +432,6 @@ ENABLE_GITHUB_PUSH=false
 ```env
 ENABLE_GITHUB_PUSH=true
 GIT_BRANCH=master
-GIT_OUTPUT_PATHS="outputs/latest outputs/runs outputs/archive"
 GIT_PULL_BEFORE_PUSH=true
 GIT_COMMIT_USER_NAME=codex-research-agent
 GIT_COMMIT_USER_EMAIL=codex-research-agent@users.noreply.github.com
@@ -451,6 +450,8 @@ git remote -v
 git branch --show-current
 git push --dry-run origin master
 ```
+
+현재 `push_outputs.sh`는 `git add .`로 repository 전체 변경사항을 commit/push합니다. `.gitignore`에 의해 `config/research.env`, `.env`, logs는 제외됩니다.
 
 이 프로젝트는 GitHub 앱에서 Markdown 결과를 바로 보기 위해 generated outputs를 Git에 올릴 수 있게 되어 있습니다.
 

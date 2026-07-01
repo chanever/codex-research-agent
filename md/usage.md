@@ -431,7 +431,6 @@ ENABLE_GITHUB_PUSH=false
 ```env
 ENABLE_GITHUB_PUSH=true
 GIT_BRANCH=master
-GIT_OUTPUT_PATHS="outputs/latest outputs/runs outputs/archive"
 ```
 
 실행:
@@ -440,7 +439,7 @@ GIT_OUTPUT_PATHS="outputs/latest outputs/runs outputs/archive"
 bash scripts/push_outputs.sh
 ```
 
-현재 설정에서는 generated outputs가 Git에 올라갈 수 있다. GitHub 앱에서 바로 보기 위한 운영 방식이다.
+현재 설정에서는 `push_outputs.sh`가 `git add .`로 repository 전체 변경사항을 commit/push한다. `.gitignore`에 의해 `config/research.env`, `.env`, logs는 제외된다.
 
 추천:
 

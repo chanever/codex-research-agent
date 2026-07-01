@@ -1,6 +1,6 @@
 # GitHub Push
 
-`scripts/push_outputs.sh` can commit and push generated outputs, but it is disabled by default.
+`scripts/push_outputs.sh` can commit and push repository changes with `git add .`, but it is disabled by default.
 
 ## Enable
 
@@ -9,7 +9,6 @@ In `config/research.env`:
 ```env
 ENABLE_GITHUB_PUSH=true
 GIT_BRANCH=master
-GIT_OUTPUT_PATHS="outputs/latest outputs/runs outputs/archive"
 ```
 
 ## Prerequisites
@@ -45,7 +44,7 @@ After `ENABLE_GITHUB_PUSH=true`, run:
 bash scripts/push_outputs.sh
 ```
 
-This only pushes files that are already present under `GIT_OUTPUT_PATHS`.
+This stages repository changes with `git add .`, then commits and pushes them. Files ignored by `.gitignore`, such as `config/research.env`, `.env`, and logs, are not committed.
 
 ## Run Research and Push
 
@@ -82,7 +81,7 @@ Use a private repository when outputs contain personal research notes. If you ke
 The script:
 
 - Does nothing unless `ENABLE_GITHUB_PUSH=true`.
-- Stages `GIT_OUTPUT_PATHS`.
+- Stages repository changes with `git add .`.
 - Exits successfully when there are no changes.
 - Uses commit messages like `daily research brief: YYYY-MM-DD`.
 - Pushes normally with `git push origin "$GIT_BRANCH"`.

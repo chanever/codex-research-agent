@@ -138,9 +138,10 @@ nano config/research.env
 ```env
 ENABLE_GITHUB_PUSH=true
 GIT_BRANCH=master
-GIT_OUTPUT_PATHS="outputs/latest outputs/runs outputs/archive"
 GIT_PULL_BEFORE_PUSH=true
 ```
+
+현재 `push_outputs.sh`는 `git add .`로 repository 전체 변경사항을 commit/push한다. `.gitignore`에 의해 `config/research.env`, `.env`, logs는 제외된다.
 
 서버의 Linux sandbox 환경에 따라 `workspace-write`가 실패할 수 있다. `logs/codex_stderr.log`에 아래 오류가 보이면:
 
