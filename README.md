@@ -21,7 +21,7 @@
 사용자가 `config/research.env`에 연구 분야와 키워드를 적어두면, `scripts/run_once.sh`가 Codex CLI를 실행합니다.
 
 Codex는 설정된 연구 주제를 기준으로 웹 검색을 수행하고, 아래 3개의 Markdown 파일을 생성합니다.
- 
+  
 ```txt
 daily_research_brief.md
 papers_to_read.md
