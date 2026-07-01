@@ -359,3 +359,52 @@ bash scripts/run_once.sh
 ```
 
 전체 실행은 웹 검색과 긴 정리 작업 때문에 오래 걸릴 수 있다.
+
+---
+
+## 11. Server Sandbox Failure and `danger-full-access`
+
+Callisto 서버에서 `CODEX_SANDBOX=workspace-write`로 `scripts/run_once.sh`를 실행하면 Codex 내부 명령 실행이 다음 오류로 실패할 수 있다.
+
+```txt
+bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
+```
+
+증상:
+
+- Codex의 웹 조사는 진행된다.
+- `final_response.md`는 실패 메시지로 생성될 수 있다.
+- 하지만 `daily_research_brief.md`, `papers_to_read.md`, `research_ideas.md`는 실제로 생성되지 않는다.
+- Codex가 내부에서 `mkdir -p` 또는 파일 쓰기 도구를 실행하려 할 때 sandbox 생성 단계에서 막힌다.
+
+원인:
+
+- `workspace-write`는 Codex가 작업 디렉터리 안에서만 파일을 쓰도록 OS-level sandbox를 적용한다.
+- Linux 환경에서는 Codex sandbox가 `bubblewrap`/namespace 기능에 의존할 수 있다.
+- 현재 서버 환경에서는 해당 namespace 또는 loopback 설정 권한이 허용되지 않아 `bwrap`가 실패한다.
+
+서버용 해결:
+
+```env
+CODEX_SANDBOX=danger-full-access
+```
+
+이 설정은 `config/research.env`에 둔다.
+
+```bash
+grep '^CODEX_SANDBOX=' config/research.env
+```
+
+기대 출력:
+
+```txt
+CODEX_SANDBOX=danger-full-access
+```
+
+주의사항:
+
+- `danger-full-access`는 Codex가 sandbox 제한 없이 현재 사용자 권한으로 명령을 실행한다.
+- 개인 서버, 신뢰하는 repository, 신뢰하는 prompt에서만 사용하는 것이 좋다.
+- public/untrusted repository나 외부에서 받은 prompt를 그대로 실행할 때는 위험할 수 있다.
+- 로컬 PC에서 `workspace-write`가 정상 동작한다면 로컬에서는 계속 `workspace-write`를 유지하는 편이 더 안전하다.
+- 이 설정은 서버의 sandbox 권한 문제를 우회하기 위한 운영상 선택이지, 기본적으로 더 안전한 설정은 아니다.

@@ -56,6 +56,16 @@ If runtime values are missing, use these generic defaults:
 
 Keep paper titles, repository names, benchmark names, dataset names, and framework names in their original English.
 
+Write for a reader who is technically strong but may not already know the specific paper, benchmark, or security subfield.
+
+For difficult concepts:
+
+- Prefer plain Korean explanations before dense terminology.
+- Define important jargon briefly the first time it appears.
+- Add concrete example scenarios that make the attack, defense, or research idea easy to picture.
+- When mentioning a graph/provenance/security concept, explain what the nodes, edges, attacker, defender, and harmful outcome would be in a small toy case.
+- Do not oversimplify away uncertainty. Keep limitations and verification notes.
+
 ---
 
 # Research Context
@@ -112,6 +122,9 @@ For every item:
 - Mark unverified freshness as `freshness 확인 필요`.
 - If only the abstract was available, mark the summary as `abstract 기반 요약`.
 - Be explicit about uncertainty, limitations, and what a human should verify.
+- Include enough background knowledge for me to understand why the item matters.
+- Include a short example scenario showing how the paper/repository/benchmark would look in practice.
+- If the item introduces a hard term, define it in one sentence.
 
 ---
 
@@ -134,6 +147,13 @@ Use this structure:
 
 ...
 
+## Background Primer
+
+- Key concept 1:
+  - Easy explanation:
+  - Why it matters for this research:
+  - Tiny example:
+
 ## Recommended Items Top 5
 
 ### 1. Title
@@ -143,8 +163,12 @@ Use this structure:
 - URL:
 - Date:
 - Relevance Score:
+- One-line takeaway:
+- Background knowledge:
+- Key terms explained:
 - Why it matters:
 - Key idea:
+- Example scenario:
 - Limitation / uncertainty:
 - Connection to my research:
 - Possible experiment:
@@ -184,9 +208,13 @@ Use this structure:
 - Type:
 - URL:
 - Relevance Score:
+- One-line takeaway:
+- Background knowledge before reading:
 - Why read first:
 - Expected value:
 - Related keywords:
+- Example scenario:
+- What to pay attention to:
 - Reading notes:
 
 ## Medium Priority
@@ -222,22 +250,81 @@ Write this file:
 
 Use this structure and include at least five ideas:
 
+For each idea:
+
+- Explain it in easy Korean before the technical formulation.
+- Use the six Ws and H so I can understand the concrete research situation.
+- Cite prior work problems with source title and URL.
+- Name concrete benchmark or dataset candidates when possible, such as AgentDojo, AgentDyn, MCPTox, MSB, SafeClawBench, or another relevant benchmark found during search.
+- Describe how the methodology could actually be implemented, not only the high-level concept.
+- Describe what experiments to run, what metrics to measure, and what baselines to compare against.
+- State the likely contribution in relation to the limitations of prior work.
+- If a benchmark, dataset, repository, or prior paper is only partially verified, mark it as `freshness 확인 필요`.
+
 ```md
 # Research Ideas
 
 ## Idea 1. Title
 
+### Easy Explanation
+
+- One-line summary:
+- Intuition:
+- Example scenario:
+
+### Six Ws and H
+
+- Who:
+- What:
+- When:
+- Where:
+- Why:
+- How:
+
+### Research Framing
+
 - Hypothesis:
 - Motivation:
+- Existing problems in prior work:
+  - Problem 1:
+    - Source:
+    - URL:
+    - Why it is not enough:
+  - Problem 2:
+    - Source:
+    - URL:
+    - Why it is not enough:
+- Proposed contribution:
+- Why this could be novel:
+
+### Methodology
+
 - Required data:
-- Method:
-- Evaluation:
+- System design:
+- Implementation steps:
+- Graph schema:
+  - Nodes:
+  - Edges:
+  - Labels:
+- Detector / algorithm:
+- Baselines to compare:
+
+### Experiments
+
+- Benchmark / dataset candidates:
+- Experimental setup:
+- Metrics:
+- Baseline comparisons:
+- Ablation study:
+- Expected result:
+- Failure cases to check:
+
+### Practical Plan
+
 - Expected difficulty:
 - Risk / limitation:
-- Connection to research focus:
-- Connection to key concepts:
-- Connection to evaluation / validation:
 - First experiment:
+- Next implementation step:
 
 ## Experiment Backlog
 

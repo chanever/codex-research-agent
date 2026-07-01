@@ -52,6 +52,12 @@ cp config/research.env.example config/research.env
 
 `config/research.env`는 개인 설정 파일이다. `.gitignore`에 의해 GitHub에 올라가지 않는다.
 
+실행 환경을 먼저 확인하려면:
+
+```bash
+bash scripts/check_server_ready.sh
+```
+
 ---
 
 ## 3. Configure Research Topic
@@ -148,7 +154,7 @@ bash scripts/run_once.sh
 ```bash
 codex --search --ask-for-approval never exec \
   --cd "$PROJECT_ROOT" \
-  --sandbox workspace-write \
+  --sandbox "$CODEX_SANDBOX" \
   --output-last-message outputs/runs/YYYY_MM_DD_HH_MM/final_response.md \
   -
 ```
@@ -156,9 +162,38 @@ codex --search --ask-for-approval never exec \
 주의:
 
 - 실제 명령은 `CODEX_WEB_SEARCH_MODE` 값에 따라 달라진다.
+- sandbox 값은 `config/research.env`의 `CODEX_SANDBOX`를 따른다.
 - `live`일 때만 `--search`가 붙는다.
 - 프롬프트는 stdin으로 전달된다.
 - stdout/stderr는 `logs/`에 저장된다.
+
+### Sandbox 설정
+
+`CODEX_SANDBOX`는 Codex가 파일을 쓰거나 명령을 실행할 때 어느 정도 제한을 둘지 정한다.
+
+```env
+CODEX_SANDBOX=workspace-write
+```
+
+는 더 안전한 설정이다. 작업 디렉터리 안에서 쓰기를 허용하고, OS-level sandbox로 실행 범위를 제한한다.
+
+서버 환경에 따라 `workspace-write`가 아래 오류로 실패할 수 있다.
+
+```txt
+bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
+```
+
+이 경우 서버의 `config/research.env`에서 아래처럼 바꿀 수 있다.
+
+```env
+CODEX_SANDBOX=danger-full-access
+```
+
+주의:
+
+- `danger-full-access`는 sandbox 제한 없이 현재 사용자 권한으로 명령을 실행한다.
+- 신뢰하는 서버, repository, prompt에서만 사용한다.
+- 로컬 PC에서 `workspace-write`가 잘 동작한다면 로컬에서는 `workspace-write`를 유지하는 것이 좋다.
 
 ---
 
@@ -505,6 +540,7 @@ find outputs -maxdepth 3 -type f | sort
 - web search 또는 모델 실행이 오래 걸림
 - 프롬프트가 너무 무거움
 - `config/research.env`에 오래된 값이 남아 있음
+- Linux 서버에서 `workspace-write` sandbox가 `bwrap` 권한 문제로 실패함
 
 ### 전체 실행이 너무 오래 걸림
 
@@ -551,7 +587,7 @@ cat outputs/latest/final_response.md
 - `.env` 파일 commit
 - Codex auth/token 저장
 - GitHub token 저장
-- `danger-full-access` 또는 `--yolo`를 기본값으로 사용
+- 신뢰할 수 없는 repository나 prompt에서 `danger-full-access` 사용
 - 생성된 private outputs를 무심코 public repo에 push
 - force push
 

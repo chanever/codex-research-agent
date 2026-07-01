@@ -10,6 +10,12 @@ cp config/research.env.example config/research.env
 
 Edit `config/research.env` to set your research domain, focus, keywords, output language, and Codex CLI options.
 
+Before a real run, check the local environment:
+
+```bash
+bash scripts/check_server_ready.sh
+```
+
 ## Change Research Topic
 
 Most topic changes only require editing `config/research.env`; you usually do not need to edit `prompts/make_research_brief.md`.
@@ -39,12 +45,33 @@ The script:
 
 - Sources `config/research.env` when present.
 - Creates `outputs/runs/YYYY_MM_DD_HH_MM`, `outputs/latest`, and `logs`.
-- Runs `codex exec` with `--sandbox workspace-write` and `--ask-for-approval never`.
+- Runs `codex exec` with the configured `CODEX_SANDBOX` and `--ask-for-approval never`.
 - Uses `CODEX_WEB_SEARCH_MODE=live` by default, which passes `--search`.
 - Writes Codex stdout to `logs/codex_stdout.log`.
 - Writes Codex stderr to `logs/codex_stderr.log`.
 - Writes the final Codex response to `outputs/runs/YYYY_MM_DD_HH_MM/final_response.md`.
 - Copies completed run files into `outputs/latest`.
+
+## Sandbox Notes
+
+`CODEX_SANDBOX` controls how much filesystem and command access Codex has while generating files.
+
+- `workspace-write`: safer default when it works; writes are limited to the workspace.
+- `danger-full-access`: no Codex sandbox restrictions; useful on Linux servers where `workspace-write` fails because of `bwrap`/namespace permissions.
+
+If `logs/codex_stderr.log` contains:
+
+```txt
+bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
+```
+
+set this in `config/research.env` on that server:
+
+```env
+CODEX_SANDBOX=danger-full-access
+```
+
+Use `danger-full-access` only for trusted repositories and prompts.
 
 ## Generated Files
 
@@ -55,6 +82,8 @@ The prompt asks Codex to generate:
 - `outputs/runs/YYYY_MM_DD_HH_MM/research_ideas.md`
 
 `outputs/latest` contains a copy of the newest completed run.
+
+The generated brief is designed to be readable for someone who does not already know every paper or benchmark. It includes background knowledge, key-term explanations, example scenarios, and research ideas structured with implementation plans, benchmark candidates, baselines, and expected contributions.
 
 ## Final Response
 

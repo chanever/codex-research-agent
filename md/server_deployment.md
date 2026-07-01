@@ -142,6 +142,24 @@ GIT_OUTPUT_PATHS="outputs/latest outputs/runs outputs/archive"
 GIT_PULL_BEFORE_PUSH=true
 ```
 
+서버의 Linux sandbox 환경에 따라 `workspace-write`가 실패할 수 있다. `logs/codex_stderr.log`에 아래 오류가 보이면:
+
+```txt
+bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
+```
+
+서버용 `config/research.env`에서는 아래 값을 사용한다.
+
+```env
+CODEX_SANDBOX=danger-full-access
+```
+
+주의:
+
+- `danger-full-access`는 Codex가 sandbox 제한 없이 현재 사용자 권한으로 명령을 실행한다.
+- 신뢰하는 서버, 신뢰하는 repository, 신뢰하는 prompt에서만 사용한다.
+- 로컬 PC에서 `workspace-write`가 정상 동작한다면 로컬에서는 `workspace-write`를 유지하는 편이 안전하다.
+
 Codex 경로가 cron에서 안 잡힐 수 있으므로 절대경로를 넣어두면 안전하다.
 
 ```bash
@@ -408,6 +426,20 @@ find outputs -maxdepth 3 -type f | sort
 
 먼저 smoke test를 다시 실행한다.
 
+`bwrap` 오류가 보이면 서버의 sandbox 권한 문제일 수 있다.
+
+```txt
+bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
+```
+
+이 경우 서버의 `config/research.env`에서:
+
+```env
+CODEX_SANDBOX=danger-full-access
+```
+
+로 설정한 뒤 다시 실행한다.
+
 ### 전체 실행이 너무 오래 걸림
 
 조정:
@@ -430,3 +462,4 @@ RESEARCH_KEYWORDS="핵심 키워드 5개 정도"
 - GitHub token을 파일에 저장하지 않는다.
 - outputs를 GitHub에 push하므로 repo는 private 권장이다.
 - public repo에 outputs를 올리기 전에는 민감한 내용이 없는지 확인한다.
+- `danger-full-access`는 서버 sandbox 문제를 우회하기 위한 설정이므로, 신뢰할 수 있는 실행 환경에서만 사용한다.

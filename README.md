@@ -21,7 +21,7 @@
 사용자가 `config/research.env`에 연구 분야와 키워드를 적어두면, `scripts/run_once.sh`가 Codex CLI를 실행합니다.
 
 Codex는 설정된 연구 주제를 기준으로 웹 검색을 수행하고, 아래 3개의 Markdown 파일을 생성합니다.
-
+ 
 ```txt
 daily_research_brief.md
 papers_to_read.md
@@ -65,10 +65,13 @@ outputs/latest/research_ideas.md
 포함 내용:
 
 - 오늘 조사한 자료 요약
+- 핵심 배경지식
 - 추천 자료 Top N
 - 각 자료의 URL
 - 날짜
 - relevance score
+- 어려운 용어 설명
+- 예시 시나리오
 - 왜 중요한지
 - 내 연구와의 연결점
 - 가능한 실험 아이디어
@@ -81,9 +84,13 @@ outputs/latest/research_ideas.md
 포함 내용:
 
 - High / Medium / Low priority
+- 읽기 전 알아야 할 배경지식
+- 한 줄 핵심 요약
 - 먼저 읽어야 하는 이유
 - 기대되는 가치
 - 관련 키워드
+- 예시 시나리오
+- 읽을 때 집중할 부분
 - 30분 / 2시간 / deep reading plan
 
 ### `research_ideas.md`
@@ -93,10 +100,18 @@ outputs/latest/research_ideas.md
 포함 내용:
 
 - 최소 5개 이상의 연구 아이디어
+- 쉬운 설명
+- 예시 시나리오
+- 육하원칙
 - 가설
+- 기존 연구의 문제와 출처 URL
 - 필요한 데이터
-- 방법론
-- 평가 방법
+- 구현 가능한 방법론
+- graph schema
+- 실험 방법
+- benchmark / dataset 후보
+- baseline 비교
+- 예상 기여점
 - 예상 난이도
 - 한계
 - 첫 실험 제안
@@ -201,6 +216,8 @@ codex
 git clone https://github.com/YOUR_NAME/codex-research-agent.git
 cd codex-research-agent
 cp config/research.env.example config/research.env
+nano config/research.env
+bash scripts/check_server_ready.sh
 bash scripts/run_once.sh
 ```
 
@@ -306,7 +323,7 @@ bash scripts/run_once.sh
 ```bash
 codex --search --ask-for-approval never exec \
   --cd "$PROJECT_ROOT" \
-  --sandbox workspace-write \
+  --sandbox "$CODEX_SANDBOX" \
   --output-last-message outputs/runs/YYYY_MM_DD_HH_MM/final_response.md \
   -
 ```
@@ -359,7 +376,7 @@ cat outputs/latest/final_response.md
 
 - Codex CLI 실행
 - Codex 인증
-- workspace-write sandbox에서 파일 생성
+- configured sandbox에서 파일 생성
 - runtime output path 전달
 - `outputs/latest` 복사
 - `final_response.md` 저장
@@ -425,6 +442,14 @@ GIT_COMMIT_USER_EMAIL=codex-research-agent@users.noreply.github.com
 
 ```bash
 bash scripts/push_outputs.sh
+```
+
+push 전에 서버 또는 로컬에서 GitHub 인증이 되어 있어야 합니다. 먼저 아래 dry run으로 확인할 수 있습니다.
+
+```bash
+git remote -v
+git branch --show-current
+git push --dry-run origin master
 ```
 
 이 프로젝트는 GitHub 앱에서 Markdown 결과를 바로 보기 위해 generated outputs를 Git에 올릴 수 있게 되어 있습니다.
@@ -563,6 +588,21 @@ cat logs/codex_stderr.log
 - 웹 검색 또는 모델 실행이 오래 걸림
 - `config/research.env` 설정 오류
 - `CODEX_WEB_SEARCH_MODE=live`인데 현재 Codex CLI가 `--search`를 지원하지 않음
+- Linux 서버에서 `CODEX_SANDBOX=workspace-write`가 `bwrap` 권한 문제로 실패함
+
+Linux 서버에서 아래 오류가 보이면:
+
+```txt
+bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
+```
+
+서버용 `config/research.env`에서 아래 값을 사용할 수 있습니다.
+
+```env
+CODEX_SANDBOX=danger-full-access
+```
+
+주의: 이 설정은 sandbox 제한 없이 현재 사용자 권한으로 명령을 실행하므로, 신뢰하는 서버/repository/prompt에서만 사용합니다. 로컬에서 `workspace-write`가 정상 동작한다면 로컬에서는 더 안전한 `workspace-write`를 유지하는 편이 좋습니다.
 
 ### GitHub push가 안 됨
 
@@ -634,7 +674,8 @@ md/initial_prompts.md
 - `.env` 파일을 commit하지 않습니다.
 - Codex 로그인 정보나 token을 저장소에 넣지 않습니다.
 - GitHub token을 파일로 저장하지 않습니다.
-- `danger-full-access` 또는 `--yolo`를 기본 실행 옵션으로 쓰지 않습니다.
+- 가능한 경우 `workspace-write`처럼 제한된 sandbox를 사용합니다.
+- 서버 환경에서 `workspace-write`가 `bwrap` 권한 문제로 실패할 때만 `danger-full-access`를 신중하게 사용합니다.
 - 자동화가 force push를 하지 않도록 합니다.
 - outputs를 GitHub에 올릴 경우 repository를 private으로 유지하는 것을 권장합니다.
 - public repository에 outputs를 올리기 전에는 민감한 내용이 없는지 반드시 확인합니다.
