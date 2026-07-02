@@ -385,13 +385,19 @@ cat outputs/latest/final_response.md
 
 ## 밤마다 자동 실행하기
 
-자동 실행용 스크립트는 아래입니다.
+계속 켜두는 자동 실행용 스크립트는 아래입니다.
 
 ```bash
 bash scripts/nightly_run.sh
 ```
 
-이 스크립트는 다음 순서로 동작합니다.
+기본값은 loop 모드입니다. 한 사이클이 끝나고 GitHub push까지 완료되면 `NIGHTLY_RUN_INTERVAL_SECONDS`만큼 sleep한 뒤 다시 실행합니다. 기본 interval은 86400초, 즉 24시간입니다.
+
+```bash
+NIGHTLY_RUN_INTERVAL_SECONDS=86400 bash scripts/nightly_run.sh
+```
+
+한 사이클은 다음 순서로 동작합니다.
 
 ```txt
 run_once.sh 실행
@@ -400,6 +406,14 @@ run_once.sh 실행
 → outputs/archive/YYYY-MM-DD/에 복사
 → push_outputs.sh 실행
 → 설정이 켜져 있으면 GitHub에 commit/push
+→ interval만큼 sleep
+→ 다음 cycle 반복
+```
+
+예전처럼 한 번만 실행하고 종료하려면:
+
+```bash
+NIGHTLY_RUN_MODE=once bash scripts/nightly_run.sh
 ```
 
 cron 예시 출력:
@@ -412,7 +426,7 @@ bash scripts/setup_cron.example.sh
 
 ```cron
 TZ=Asia/Seoul
-30 1 * * * cd /path/to/codex-research-agent && bash scripts/nightly_run.sh >> logs/cron.log 2>&1
+30 1 * * * cd /path/to/codex-research-agent && NIGHTLY_RUN_MODE=once bash scripts/nightly_run.sh >> logs/cron.log 2>&1
 ```
 
 위 설정은 한국 시간 기준 매일 새벽 1시 30분에 실행합니다.

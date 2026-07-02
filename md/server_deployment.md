@@ -285,7 +285,7 @@ cat outputs/latest/final_response.md
 cron 등록 전, 수동으로 nightly 전체 흐름을 테스트한다.
 
 ```bash
-bash scripts/nightly_run.sh
+NIGHTLY_RUN_MODE=once bash scripts/nightly_run.sh
 ```
 
 이 스크립트는:
@@ -333,7 +333,7 @@ crontab -e
 
 ```cron
 TZ=Asia/Seoul
-30 1 * * * cd /home/ubuntu/apps/codex-research-agent && bash scripts/nightly_run.sh >> logs/cron.log 2>&1
+30 1 * * * cd /home/ubuntu/apps/codex-research-agent && NIGHTLY_RUN_MODE=once bash scripts/nightly_run.sh >> logs/cron.log 2>&1
 ```
 
 저장 후 확인:

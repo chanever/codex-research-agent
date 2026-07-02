@@ -344,6 +344,14 @@ ls -la outputs/latest
 bash scripts/nightly_run.sh
 ```
 
+기본값은 loop 모드다. 한 사이클이 끝난 뒤 `NIGHTLY_RUN_INTERVAL_SECONDS`만큼 sleep하고 다시 실행한다. 기본값은 86400초, 즉 24시간이다.
+
+한 번만 실행하려면:
+
+```bash
+NIGHTLY_RUN_MODE=once bash scripts/nightly_run.sh
+```
+
 이 스크립트는:
 
 1. `scripts/run_once.sh` 실행
@@ -366,7 +374,7 @@ bash scripts/setup_cron.example.sh
 
 ```cron
 TZ=Asia/Seoul
-30 1 * * * cd /path/to/codex-research-agent && bash scripts/nightly_run.sh >> logs/cron.log 2>&1
+30 1 * * * cd /path/to/codex-research-agent && NIGHTLY_RUN_MODE=once bash scripts/nightly_run.sh >> logs/cron.log 2>&1
 ```
 
 crontab 편집:
